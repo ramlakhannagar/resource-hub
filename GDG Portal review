@@ -1,0 +1,68 @@
+# GDG Portal Review & Suggestions
+
+**Site reviewed:** https://gdgocaitr.vercel.app/
+**Reviewed by:** Ram
+**Date:** 8 October 2026
+**Tools used:** Chrome on a laptop, and Google PageSpeed Insights (real-visitor data from phones)
+
+---
+
+## 1. How I reviewed the portal
+
+- Read the page source, meta tags, `robots.txt` and `sitemap.xml`.
+- Opened the Events, Team, Gallery and Contact pages and the footer links in Chrome and used them the way a visitor would.
+- Ran Google PageSpeed Insights (pagespeed.web.dev) on the home page and read its real-visitor data for phones.
+
+Pages I did not review in detail: About, Announcements, Resources, Sign In, Sign Up and the three policy pages.
+
+---
+
+## 2. What works well
+
+- A clean, consistent Google-style design across the pages I opened.
+- A clear top menu that stays visible while scrolling and highlights the current page.
+- A dark / light mode toggle in the top menu.
+- A complete `sitemap.xml` listing 11 public pages, and a `robots.txt` that points to it.
+
+---
+
+## 3. Issues a visitor can see
+
+### 3.1 A past event still shows "6 seats left"
+**Where:** `/events`, the card "Hands-on Workshop: Launch Your Portfolio Website with AI" (21 Sept 2026, Lab 116).
+**What I saw:** The card is marked "Past Event" and its button says "Closed", but it also shows "6 seats left".
+**Why it's a problem:** Visitors can think they can still join, and a seat count for an event that already happened makes the page look unreliable. The badge, the button and the seat count disagree with each other.
+**Suggested fix:** Show the seat count only for upcoming events with open registration. For past events, hide it or replace it with "Event completed". Better still, decide "past" from the event date in code, so the badge, the button and the seat count always agree.
+
+### 3.2 Footer links open the new page but keep the old scroll position
+**Where:** the footer of every page: the five Quick Navigation links (Upcoming Events, Chapter Core Team, About Mission & Vision, Latest Announcements, Event Photo Gallery) and the Privacy Policy, Terms of Service and Community Guidelines links.
+**What I saw:** Tapping a footer link opens the right page, but the screen stays at the bottom where the footer was, instead of jumping to the top of the new page. The visitor has to scroll up to find the content. The same happens with the Privacy Policy, Terms of Service and Community Guidelines links.
+**Why it's a problem:** It looks as if the tap did nothing, especially on a phone, and visitors may think the link is broken. The likely cause is that the site changes pages without a full reload, and in that case the browser keeps the old scroll position unless the code resets it.
+**Suggested fix:** Scroll to the top every time the page address changes, using `window.scrollTo(0, 0)`. In React Router this is usually a small `ScrollToTop` component.
+
+### 3.3 Chapter Core Team link: the member list starts from the second line
+**Where:** the Chapter Core Team link in the footer Quick Navigation, which leads to the Team page.
+**What I saw:** After tapping it, the list of members starts from the second line.
+**Why it's a problem:** The first row of members may be hidden, so visitors can miss people.
+**Possible cause and fix:** The sticky top menu may be covering the first row after the page jumps to the section. If so, adding `scroll-margin-top` to the section, equal to the height of the menu, keeps the heading and the first row visible.
+
+### 3.4 The page layout jumps while loading on phones (Core Web Vitals fail)
+**Where:** the home page, measured with Google PageSpeed Insights using real visitors' phones over the 28 days from 9 Sep to 6 Oct 2026.
+**What the report shows:** The Core Web Vitals assessment is **Failed**. The reason is **Cumulative Layout Shift (CLS) of 0.17**, while Google considers 0.1 or less good. Only 47% of visits are in the good range, and 17% are poor. The other two main measures pass: Largest Contentful Paint is 2.2 s (good is 2.5 s or less) and Interaction to Next Paint is 170 ms (good is 200 ms or less). First Contentful Paint is 2.0 s, a little above the 1.8 s good mark.
+**Why it's a problem:** CLS measures how much things move around while a page loads. When content jumps, visitors can tap the wrong thing or lose their place, and Google counts it against the site in search ranking.
+**Likely cause:** Images without a reserved size, and content such as events or team members that appears after the data loads and pushes the rest of the page down. This is my guess from how the site works, not something the report states.
+**Suggested fix:** Give images fixed `width` and `height` (or CSS `aspect-ratio`), and show placeholder boxes (skeleton loaders) of the right size while events and team data load, so nothing moves when the real content arrives.
+
+### 3.5 The gallery has very few photos
+**Where:** `/gallery`.
+**What I saw:** The gallery shows only 4 photos, all from 1 event.
+**Why it's a problem:** Visitors use the gallery to judge how active the club is. With only 4 photos from a single event, a new visitor may think the club has hosted very few events. This is a content issue, not a code bug, but it affects the first impression of the club.
+**Suggested fix:** Add photos from every past event (workshops, hackathons, tech talks) and group them by event with a title and date. Add an event filter (All / Workshops / Hackathons / Tech Talks). Until more photos are ready, show a short note like "More event photos coming soon" so the page doesn't look unfinished.
+
+### 3.6 The college location on the contact page is plain text
+**Where:** `/contact`.
+**What I saw:** The contact details show the college name as ordinary text. Tapping or clicking it does nothing.
+**Why it's a problem:** A visitor who wants to reach the venue has to copy the name and search for it in Google Maps themselves. On a phone, where most students will visit, that is extra work.
+**Suggested fix:** Make the location a link that opens Google Maps, for example `https://www.google.com/maps/search/?api=1&query=Acropolis+Institute+of+Technology+and+Research+Indore`, with `target="_blank"` so it opens in a new tab. On phones this opens the Maps app. An embedded map on the contact page would also work.
+
+---
