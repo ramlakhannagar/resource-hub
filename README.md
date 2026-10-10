@@ -2,7 +2,7 @@
 
 A simple website to find, search and share developer tools, sites and tutorials. Built for the GDG on Campus AITR Web Developer Recruitment 2026 (Task 3).
 
-**Live demo:** (link will be added after deployment)
+**Live demo:** https://resource-jli9jfkxr-ramlakhannagar76-3511.vercel.app
 
 ## Features
 
