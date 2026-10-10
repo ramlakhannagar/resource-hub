@@ -22,7 +22,7 @@ Pages I did not review in detail: About, Announcements, Resources, Sign In, Sign
 - A clean, consistent Google-style design across the pages I opened.
 - A clear top menu that stays visible while scrolling and highlights the current page.
 - A dark / light mode toggle in the top menu.
-- A complete `sitemap.xml` listing 11 public pages, and a `robots.txt` that points to it.
+- A complete `sitemap.xml` listing 11 public pages.
 
 ---
 
